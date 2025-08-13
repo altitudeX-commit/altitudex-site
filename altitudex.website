@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AltitudeX — Drone Pharmacy Delivery</title>
+  <meta name="description" content="AltitudeX delivers prescription medicines to your doorstep by drone. Fast, secure, and built with safety first." />
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --bg-soft:#11141b;
+      --card:#121620;
+      --muted:#8b93a7;
+      --text:#e6eaf2;
+      --accent:#4da3ff;
+      --accent-2:#7d6bff;
+      --ok:#2ec27e;
+      --warn:#ffb020;
+      --danger:#ff5a5f;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{opacity:.9}
+    img{max-width:100%;display:block}
+    .container{width:min(1160px,92vw);margin:0 auto}
+
+    /* Top nav */
+    header{position:sticky;top:0;z-index:40;background:linear-gradient(180deg,rgba(11,13,18,.9),rgba(11,13,18,.65) 70%,rgba(11,13,18,0));backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:.3px}
+    .logo{
+      width:34px;height:34px;border-radius:9px;display:grid;place-items:center;
+      background:conic-gradient(from 210deg,var(--accent),var(--accent-2));
+      box-shadow:0 8px 20px rgba(77,163,255,.35), inset 0 0 18px rgba(255,255,255,.12);
+      font-weight:800
+    }
+    .brand span{font-size:1.05rem}
+    nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    nav a{padding:8px 12px;border-radius:12px;color:var(--text)}
+    nav a:hover{background:rgba(255,255,255,.05)}
+    .cta{padding:10px 16px;border-radius:14px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0a0c10;font-weight:700;box-shadow:0 12px 30px rgba(77,163,255,.35);border:0;cursor:pointer}
+
+    /* Hero */
+    .hero{position:relative;padding:88px 0 56px;overflow:hidden}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid rgba(255,255,255,.12);border-radius:999px;color:var(--muted);font-size:.86rem;background:rgba(255,255,255,.03)}
+    .title{font-size:clamp(2rem,4vw,3rem);line-height:1.1;margin:12px 0 6px}
+    .subtitle{color:var(--muted);font-size:1.05rem;margin-bottom:18px}
+    .badges{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 28px}
+    .badge{border:1px solid rgba(255,255,255,.12);padding:8px 12px;border-radius:999px;color:var(--muted);font-size:.9rem;background:rgba(255,255,255,.02)}
+    .hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .ghost{padding:10px 16px;border-radius:14px;border:1px solid rgba(255,255,255,.16);background:transparent;color:var(--text);font-weight:700;cursor:pointer}
+
+    .drone{
+      background:radial-gradient(1200px 600px at 100% -20%,rgba(77,163,255,.15),transparent 60%),
+                 radial-gradient(700px 500px at 20% 120%,rgba(125,107,255,.12),transparent 60%);
+      border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)
+    }
+    .drone img{border-radius:12px;filter:contrast(1.05) saturate(1.02)}
+    .note{font-size:.85rem;color:var(--muted);margin-top:8px}
+
+    /* Sections */
+    section{padding:60px 0;border-top:1px solid rgba(255,255,255,.06)}
+    h2{font-size:clamp(1.4rem,3vw,2rem);margin:0 0 14px}
+    p.lead{color:var(--muted);margin-top:0}
+
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px;font-size:1.05rem}
+    .chip{display:inline-flex;gap:8px;align-items:center;color:var(--muted);font-size:.9rem}
+
+    /* How it works */
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
+    .step{counter-increment:step;position:relative;background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:16px}
+    .step:before{content:counter(step);position:absolute;top:10px;right:12px;font-weight:800;color:var(--muted)}
+
+    /* Split */
+    .split{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+
+    /* CTA panel */
+    .cta-panel{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;align-items:center;background:linear-gradient(135deg,rgba(77,163,255,.08),rgba(125,107,255,.08));border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:20px}
+    .cta-panel input,.cta-panel button{height:44px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:#0c0f15;color:var(--text);padding:0 12px}
+    .cta-panel button{border:0;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#0b0d12;font-weight:800;cursor:pointer}
+
+    /* FAQ */
+    details{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:14px}
+    summary{cursor:pointer;font-weight:600}
+
+    /* Footer */
+    footer{padding:30px 0;color:var(--muted)}
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid,.cta-panel,.split{grid-template-columns:1fr}
+    }
+    @media (max-width: 800px){
+      .grid-3{grid-template-columns:1fr}
+      .steps{grid-template-columns:1fr 1fr}
+      nav ul{display:none}
+    }
+    @media (max-width: 520px){
+      .steps{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="logo">X</div><span>AltitudeX</span></div>
+      <nav>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#tech">Tech</a></li>
+          <li><a href="#partners">For Pharmacies</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a class="cta" href="#join">Join Pilot</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <span class="eyebrow">Fast • Safe • Secure</span>
+          <h1 class="title">Prescription delivery by drone — <span style="background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent">from pharmacy to doorstep</span>.</h1>
+          <p class="subtitle">AltitudeX is building an on‑demand service to deliver critical medicines directly to patients. Designed by an aerospace engineering student team, with a focus on reliability, safety, and delightful user experience.</p>
+          <div class="badges">
+            <div class="badge">2 kg target payload</div>
+            <div class="badge">VTOL biplane concept</div>
+            <div class="badge">Secure delivery code on landing</div>
+            <div class="badge">Patient‑first design</div>
+          </div>
+          <div class="actions">
+            <a href="#join" class="cta">Request early access</a>
+            <a href="#tech" class="ghost">See the tech</a>
+          </div>
+          <p class="note">Prototype milestone: aiming for a public demo by <strong>September 2025</strong>.</p>
+        </div>
+        <div class="drone">
+          <img alt="Concept visual of AltitudeX VTOL biplane drone" src="data:image/svg+xml;utf8,<?xml version='1.0' encoding='UTF-8'?><svg xmlns='http://www.w3.org/2000/svg' width='900' height='560'><defs><linearGradient id='g' x1='0' x2='1'><stop offset='0' stop-color='%234da3ff'/><stop offset='1' stop-color='%237d6bff'/></linearGradient></defs><rect width='100%' height='100%' fill='%2310161f'/><g fill='none' stroke='url(%23g)' stroke-width='2' opacity='0.9'><path d='M60 320 C 200 200, 700 200, 840 320'/><path d='M60 340 C 200 220, 700 220, 840 340'/><path d='M60 360 C 200 240, 700 240, 840 360'/></g><g fill='none' stroke='%23cfe3ff' stroke-width='3'><rect x='360' y='250' width='180' height='60' rx='6'/><line x1='290' y1='280' x2='360' y2='280'/><line x1='540' y1='280' x2='610' y2='280'/><line x1='260' y1='230' x2='640' y2='230'/><line x1='260' y1='330' x2='640' y2='330'/><circle cx='260' cy='230' r='26'/><circle cx='640' cy='230' r='26'/><circle cx='260' cy='330' r='26'/><circle cx='640' cy='330' r='26'/></g><text x='50%' y='86%' dominant-baseline='middle' text-anchor='middle' fill='%23a8b4c7' font-family='system-ui' font-size='18'>VTOL biplane concept illustration</text></svg>" />
+          <p class="note">Illustration for concept only.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+      <div class="container">
+        <h2>Why AltitudeX</h2>
+        <p class="lead">Built for time‑critical prescriptions and routine refills alike, with safety and patient privacy at the core.</p>
+        <div class="grid-3">
+          <div class="card">
+            <h3>End‑to‑End Chain of Custody</h3>
+            <p>Pharmacy‑sealed payloads are logged at handoff and tracked until delivery, with tamper‑evident packaging and live telemetry.</p>
+            <span class="chip">✔ <span>Traceable</span></span>
+          </div>
+          <div class="card">
+            <h3>Secure Handoff Code</h3>
+            <p>On landing, the drone displays a one‑time code. The recipient enters the matching code in their app (or keypad) to release the parcel.</p>
+            <span class="chip">🔐 <span>Two‑factor drop</span></span>
+          </div>
+          <div class="card">
+            <h3>Fast & Efficient</h3>
+            <p>VTOL for precise urban takeoff/landing, fixed‑wing for range efficiency — the best of both worlds for real deliveries.</p>
+            <span class="chip">⚡ <span>Rapid dispatch</span></span>
+          </div>
+          <div class="card">
+            <h3>Cold‑Chain Ready</h3>
+            <p>Sensors in the payload bay log temperature and shock, with alerts if thresholds are exceeded.</p>
+            <span class="chip">🌡️ <span>Monitored</span></span>
+          </div>
+          <div class="card">
+            <h3>Safety‑First</h3>
+            <p>Geofencing, automated return‑to‑home, health checks before every sortie, and layered failsafes.</p>
+            <span class="chip">🛡 <span>Redundant</span></span>
+          </div>
+          <div class="card">
+            <h3>Privacy by Design</h3>
+            <p>Minimal data collection, strong encryption, and clear consent flows for patients and partners.</p>
+            <span class="chip">🔏 <span>GDPR‑minded</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section id="how">
+      <div class="container">
+        <h2>How it works</h2>
+        <p class="lead">From prescription to your doorstep in four simple steps.</p>
+        <div class="steps">
+          <div class="step"><h3>1. Request</h3><p>Patient places an order via the AltitudeX app or through a partner pharmacy’s portal.</p></div>
+          <div class="step"><h3>2. Prepare</h3><p>Pharmacy verifies the prescription, seals the parcel, and hands off to an AltitudeX operator.</p></div>
+          <div class="step"><h3>3. Fly</h3><p>Drone departs vertically, transitions to forward flight, and navigates via pre‑approved corridors.</p></div>
+          <div class="step"><h3>4. Handoff</h3><p>On landing, the app displays a one‑time code. Enter it to unlock and collect. Done.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tech -->
+    <section id="tech">
+      <div class="container split">
+        <div>
+          <h2>The vehicle</h2>
+          <p class="lead">A long‑range VTOL biplane glider concept with quad lift motors and a pusher for cruise.</p>
+          <div class="grid-3" style="grid-template-columns:repeat(2,1fr)">
+            <div class="card"><h3>Payload</h3><p>Target 2 kg with modular payload bay options (standard, cold‑chain).</p></div>
+            <div class="card"><h3>Propulsion</h3><p>Four vertical motors for takeoff/landing; one forward motor for efficient cruise.</p></div>
+            <div class="card"><h3>Airframe</h3><p>Lightweight foam‑core with composite reinforcement for stiffness and durability.</p></div>
+            <div class="card"><h3>Avionics</h3><p>Redundant IMU, GNSS, health monitoring, and controlled transition logic.</p></div>
+          </div>
+        </div>
+        <div>
+          <h2>Safety & compliance</h2>
+          <p class="lead">Designed to align with UK CAA guidance for unmanned aircraft operations. We will only operate within granted permissions and approved test areas.</p>
+          <ul>
+            <li>Pre‑flight self‑checks and mission simulation</li>
+            <li>Geofencing and dynamic no‑fly updates</li>
+            <li>Return‑to‑home & controlled descent modes</li>
+            <li>Observer‑assisted flights during trials; BVLOS only where permitted</li>
+          </ul>
+          <p class="note">Note: Final specs and procedures may evolve during testing.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- For partners -->
+    <section id="partners">
+      <div class="container split">
+        <div>
+          <h2>For Pharmacies & Clinics</h2>
+          <p class="lead">Delight patients and reduce delivery friction.</p>
+          <div class="card"><h3>Simple onboarding</h3><p>Start with manual dispatch; upgrade to API integration for automatic job creation and status webhooks.</p></div>
+          <div class="card"><h3>Chain‑of‑custody dashboard</h3><p>Live mission tracking, proof‑of‑delivery with code entry, and environmental logs.</p></div>
+          <div class="card"><h3>Service areas</h3><p>We’ll expand gradually with pilot sites near partner locations to ensure quality and compliance.</p></div>
+        </div>
+        <div>
+          <h2>For Patients</h2>
+          <div class="card"><h3>Clear, easy app</h3><p>Request deliveries, set safe landing spots, and manage prescriptions. No jargon.</p></div>
+          <div class="card"><h3>Secure pickup</h3><p>Enter the one‑time code shown on the drone’s panel (or within the app) to release the parcel.</p></div>
+          <div class="card"><h3>Support that cares</h3><p>Chat and phone support during operating hours. Accessibility‑minded flows.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Join -->
+    <section id="join">
+      <div class="container">
+        <div class="cta-panel">
+          <div>
+            <h2>Join the pilot program</h2>
+            <p class="lead">We’re selecting pharmacies and early users for our first trials. Tell us a little about you.</p>
+            <form id="earlyAccessForm" onsubmit="return submitForm(event)">
+              <div class="grid-3" style="grid-template-columns:1fr 1fr 1fr">
+                <div>
+                  <label for="name" style="display:block;margin:0 0 6px;color:var(--muted)">Name</label>
+                  <input id="name" name="name" placeholder="Jane Doe" required />
+                </div>
+                <div>
+                  <label for="email" style="display:block;margin:0 0 6px;color:var(--muted)">Email</label>
+                  <input id="email" name="email" type="email" placeholder="you@example.com" required />
+                </div>
+                <div>
+                  <label for="role" style="display:block;margin:0 0 6px;color:var(--muted)">I am a…</label>
+                  <input id="role" name="role" placeholder="Patient / Pharmacist / Clinic" />
+                </div>
+              </div>
+              <div style="margin:12px 0 10px">
+                <label for="msg" style="display:block;margin:0 0 6px;color:var(--muted)">Anything else?</label>
+                <input id="msg" name="msg" placeholder="Location, needs, questions…" />
+              </div>
+              <button type="submit">Request access</button>
+              <p id="formMsg" class="note" role="status" style="margin-top:10px"></p>
+            </form>
+          </div>
+          <div>
+            <div class="card">
+              <h3>Roadmap (high‑level)</h3>
+              <ul style="margin-top:6px">
+                <li><strong>Now</strong> — Vehicle iteration & ground testing</li>
+                <li><strong>Summer 2025</strong> — Supervised flight trials with observers</li>
+                <li><strong>September 2025</strong> — Public demo of prototype</li>
+                <li><strong>After</strong> — Expand pilots with select partners</li>
+              </ul>
+              <p class="note">Timelines are targets and may change.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <h2>FAQs</h2>
+        <div class="grid-3">
+          <details class="card"><summary>Where do you operate?</summary><p>We’ll begin with limited pilot zones in partnership with local pharmacies, then expand as approvals allow.</p></details>
+          <details class="card"><summary>Is it safe?</summary><p>Safety leads every decision: geofencing, return‑to‑home, health monitoring, and cautious expansion of operations.</p></details>
+          <details class="card"><summary>What about bad weather?</summary><p>Operations pause in unsafe conditions. Patients will receive updates and rescheduling options.</p></details>
+          <details class="card"><summary>How is privacy handled?</summary><p>We collect only what’s necessary to deliver your order, encrypt data in transit and at rest, and give you control over your data.</p></details>
+          <details class="card"><summary>Do you integrate with pharmacy systems?</summary><p>Yes. Start manually, then integrate via API/webhooks for automated dispatch and status updates.</p></details>
+          <details class="card"><summary>Can I help?</summary><p>Absolutely. Join the pilot program or reach out if you’re an engineer, pharmacist, or community partner.</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div class="brand"><div class="logo">X</div><span>AltitudeX</span></div>
+      <div>
+        <span>Contact: </span><a href="mailto:hello@altitudex.example">hello@altitudex.example</a>
+        <span class="note" style="display:block;margin-top:6px">© <span id="year"></span> AltitudeX. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click',e=>{
+        const id=a.getAttribute('href').slice(1);
+        const el=document.getElementById(id);
+        if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
+      });
+    });
+
+    // Simple form handler (demo only)
+    function submitForm(e){
+      e.preventDefault();
+      const form=e.target;
+      const name=form.name.value.trim();
+      const email=form.email.value.trim();
+      const role=form.role.value.trim();
+      const msg=form.msg.value.trim();
+      const out=document.getElementById('formMsg');
+      if(!name||!email){ out.textContent='Please fill your name and email.'; out.style.color='var(--warn)'; return false; }
+      const payload={name,email,role,msg,ts:new Date().toISOString()};
+      console.log('Early access request:',payload);
+      out.textContent='Thanks! Your request has been noted. We\'ll be in touch.';
+      out.style.color='var(--ok)';
+      form.reset();
+      return false;
+    }
+
+    // Year in footer
+    document.getElementById('year').textContent=new Date().getFullYear();
+  </script>
+</body>
+</html>
